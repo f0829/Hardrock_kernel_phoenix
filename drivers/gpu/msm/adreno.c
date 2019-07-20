@@ -60,6 +60,7 @@ MODULE_PARM_DESC(swfdetect, "Enable soft fault detection");
 
 #define KGSL_LOG_LEVEL_DEFAULT 0
 
+static void adreno_pwr_on_work(struct work_struct *work);
 static unsigned int counter_delta(struct kgsl_device *device,
 	unsigned int reg, unsigned int *counter);
 
@@ -96,13 +97,13 @@ static struct adreno_device device_3d0 = {
 	.fw[1] = {
 		.fwvirt = NULL
 	},
-	.gmem_size = SZ_256K,
-	.ft_policy = KGSL_FT_DEFAULT_POLICY,
-	.ft_pf_policy = KGSL_FT_PAGEFAULT_DEFAULT_POLICY,
-	.long_ib_detect = 1,
-	.pwrctrl_flag = BIT(ADRENO_SPTP_PC_CTRL) | BIT(ADRENO_PPD_CTRL) |
-		BIT(ADRENO_LM_CTRL) | BIT(ADRENO_HWCG_CTRL) |
-		BIT(ADRENO_THROTTLING_CTRL),
+        .gmem_size = SZ_256K,
+        .ft_policy = KGSL_FT_DEFAULT_POLICY,
+        .ft_pf_policy = KGSL_FT_PAGEFAULT_DEFAULT_POLICY,
+        .long_ib_detect = 1,
+        .pwrctrl_flag = BIT(ADRENO_SPTP_PC_CTRL) | BIT(ADRENO_PPD_CTRL) |
+                BIT(ADRENO_LM_CTRL) | BIT(ADRENO_HWCG_CTRL) |
+                BIT(ADRENO_THROTTLING_CTRL),
 	.profile.enabled = false,
 	.active_list = LIST_HEAD_INIT(device_3d0.active_list),
 	.active_list_lock = __SPIN_LOCK_UNLOCKED(device_3d0.active_list_lock),
@@ -113,6 +114,8 @@ static struct adreno_device device_3d0 = {
 		.skipsaverestore = 1,
 		.usesgmem = 1,
 	},
+	.pwr_on_work = __WORK_INITIALIZER(device_3d0.pwr_on_work,
+		adreno_pwr_on_work),
 };
 
 /* Ptr to array for the current set of fault detect registers */
@@ -361,6 +364,17 @@ void adreno_fault_detect_stop(struct adreno_device *adreno_dev)
 	}
 
 	adreno_dev->fast_hang_detect = 0;
+}
+
+static void adreno_pwr_on_work(struct work_struct *work)
+{
+	struct adreno_device *adreno_dev =
+		container_of(work, typeof(*adreno_dev), pwr_on_work);
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+
+	mutex_lock(&device->mutex);
+	kgsl_pwrctrl_change_state(device, KGSL_STATE_ACTIVE);
+	mutex_unlock(&device->mutex);
 }
 
 /*

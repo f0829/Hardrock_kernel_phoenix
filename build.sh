@@ -3,7 +3,7 @@
 #set -e
 KERNELDIR=/home/rakesh/rebase2 
 ## Copy this script inside the kernel directory
-CLANG_TOOLCHAIN=$KERNELDIR/prebuilts/clang-6443078/bin/clang-11
+CLANG_TOOLCHAIN=$KERNELDIR/prebuilts/clang-6573524/bin/clang-11
 KERNEL_TOOLCHAIN=$KERNELDIR/prebuilts/linaro-master/bin/aarch64-linux-gnu-
 ARM32_TOOLCHAIN=$KERNELDIR/prebuilts/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
 KERNEL_DEFCONFIG=hardrock_defconfig

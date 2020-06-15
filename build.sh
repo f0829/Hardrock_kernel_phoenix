@@ -24,7 +24,7 @@ export CROSS_COMPILE=$KERNEL_TOOLCHAIN
 export CROSS_COMPILE_ARM32=$ARM32_TOOLCHAIN
 export ARCH=arm64
 export SUBARCH=arm64
-export KBUILD_COMPILER_STRING="Clang Version 11.0.1"
+export KBUILD_COMPILER_STRING="Clang Version 11.0.2"
 
 # Clean build always lol
 echo "**** Cleaning ****"

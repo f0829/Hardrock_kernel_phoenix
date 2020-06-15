@@ -753,7 +753,6 @@ setup_ak() {
       fi;
     ;;
   esac;
-  ui_print "$block";
 }
 ###
 

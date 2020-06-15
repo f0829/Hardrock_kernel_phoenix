@@ -1,15 +1,14 @@
 #!/bin/bash
 
 #set -e
-
+KERNELDIR=/home/rakesh/rebase2 
 ## Copy this script inside the kernel directory
-KERNEL_DEFCONFIG=phoenix_defconfig
+CLANG_TOOLCHAIN=$KERNELDIR/prebuilts/clang-6443078/bin/clang-11
+KERNEL_TOOLCHAIN=$KERNELDIR/prebuilts/linaro-master/bin/aarch64-linux-gnu-
+ARM32_TOOLCHAIN=$KERNELDIR/prebuilts/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+KERNEL_DEFCONFIG=hardrock_defconfig
 ANYKERNEL3_DIR=$PWD/AnyKernel3/
-FINAL_KERNEL_ZIP=Optimus_Drunk_Phoenix_v10.8.zip
-export PATH="$KERNELDIR/prebuilts/proton-clang/bin:${PATH}"
-export ARCH=arm64
-export SUBARCH=arm64
-export KBUILD_COMPILER_STRING="$($KERNELDIR/prebuilts/proton-clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+FINAL_KERNEL_ZIP=Hardrock_kernelv0.4.6.zip
 # Speed up build process
 MAKE="./makeparallel"
 
@@ -19,6 +18,13 @@ cyan='\033[0;36m'
 yellow='\033[0;33m'
 red='\033[0;31m'
 nocol='\033[0m'
+
+echo "**** Setting Toolchain ****"
+export CROSS_COMPILE=$KERNEL_TOOLCHAIN
+export CROSS_COMPILE_ARM32=$ARM32_TOOLCHAIN
+export ARCH=arm64
+export SUBARCH=arm64
+export KBUILD_COMPILER_STRING="Clang Version 11.0.1"
 
 # Clean build always lol
 echo "**** Cleaning ****"
@@ -30,15 +36,7 @@ echo -e "$blue***********************************************"
 echo "          BUILDING KERNEL          "
 echo -e "***********************************************$nocol"
 make $KERNEL_DEFCONFIG O=out
-make -j$(nproc --all) O=out \
-                      ARCH=arm64 \
-                      CC=clang \
-                      CROSS_COMPILE=aarch64-linux-gnu- \
-                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                      NM=llvm-nm \
-                      OBJCOPY=llvm-objcopy \
-                      OBJDUMP=llvm-objdump \
-                      STRIP=llvm-strip
+make -j$(nproc --all) CC=$CLANG_TOOLCHAIN CLANG_TRIPLE=aarch64-linux-gnu- O=out
 
 echo "**** Verify Image.gz-dtb ****"
 ls $PWD/out/arch/arm64/boot/Image.gz-dtb

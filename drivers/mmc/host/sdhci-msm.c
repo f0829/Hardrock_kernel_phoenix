@@ -1231,6 +1231,10 @@ int sdhci_msm_execute_tuning(struct sdhci_host *host, u32 opcode)
 	 * Don't allow re-tuning for CRC errors observed for any commands
 	 * that are sent during tuning sequence itself.
 	 */
+	msm_host->tuning_done = 0;
+
+	/*
+	 */
 	if (msm_host->tuning_in_progress)
 		return 0;
 	msm_host->tuning_in_progress = true;

@@ -510,6 +510,7 @@ struct cpufreq_governor {
 					 char *buf);
 	int	(*store_setspeed)	(struct cpufreq_policy *policy,
 					 unsigned int freq);
+	unsigned int max_transition_latency;
 	/* For governors which change frequency dynamically by themselves */
 	bool			dynamic_switching;
 	struct list_head	governor_list;

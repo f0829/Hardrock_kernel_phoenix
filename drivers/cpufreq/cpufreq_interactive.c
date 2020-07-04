@@ -34,6 +34,8 @@
 #include <linux/slab.h>
 #include <uapi/linux/sched/types.h>
 
+#define TRANSITION_LATENCY_LIMIT		(10 * 1000 * 1000)
+
 #define CREATE_TRACE_POINTS
 #include <trace/events/cpufreq_interactive.h>
 

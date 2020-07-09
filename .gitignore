@@ -43,7 +43,7 @@
 *.xz
 Module.symvers
 modules.builtin
-
+Hardrock*
 #
 # Top-level generic files
 #

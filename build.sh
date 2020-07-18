@@ -8,7 +8,7 @@ KERNEL_TOOLCHAIN=$KERNELDIR/prebuilts/linaro-master/bin/aarch64-linux-gnu-
 ARM32_TOOLCHAIN=$KERNELDIR/prebuilts/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
 KERNEL_DEFCONFIG=hardrock_defconfig
 ANYKERNEL3_DIR=$PWD/AnyKernel3/
-FINAL_KERNEL_ZIP=Hardrock_kernelv0.7.1.zip
+FINAL_KERNEL_ZIP=Hardrock_kernelv0.7.2.zip
 # Speed up build process
 MAKE="./makeparallel"
 

@@ -44,6 +44,8 @@
 Module.symvers
 modules.builtin
 Hardrock*
+Any*
+build.sh
 #
 # Top-level generic files
 #

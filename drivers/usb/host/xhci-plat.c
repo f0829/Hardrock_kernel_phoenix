@@ -477,23 +477,13 @@ static int xhci_plat_resume(struct device *dev)
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 	int ret;
 
-	/* xhci PM ops not required if 'skip_resume' is true */
-	if (!xhci || hcd_to_bus(hcd)->skip_resume)
-		return 0;
-
-	dev_dbg(dev, "xhci-plat PM resume\n");
-
 	ret = xhci_priv_resume_quirk(hcd);
 	if (ret)
 		return ret;
 
+	return xhci_resume(xhci, 0);
 	/* resume from hibernation/power-collapse */
 	ret = xhci_resume(xhci, true);
-	pm_runtime_disable(dev);
-	pm_runtime_set_active(dev);
-	pm_runtime_enable(dev);
-
-	return ret;
 }
 #endif
 

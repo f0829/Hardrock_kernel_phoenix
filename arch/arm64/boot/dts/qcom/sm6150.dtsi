@@ -1732,7 +1732,7 @@
 		iommus = <&apps_smmu 0x0106 0x0011>,
 			 <&apps_smmu 0x0116 0x0011>;
 	};
-
+  
 	qcom_msmhdcp: qcom,msm_hdcp {
 		compatible = "qcom,msm-hdcp";
 	};

@@ -42,6 +42,10 @@
 Module.symvers
 modules.builtin
 
+AnyKernel3/
+build.sh
+prebuilts/
+Hardrockkernel*
 #
 # Top-level generic files
 #
